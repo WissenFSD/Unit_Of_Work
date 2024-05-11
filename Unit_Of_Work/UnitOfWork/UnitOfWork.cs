@@ -8,8 +8,8 @@ namespace Unit_Of_Work.UnitOfWork
 	{
 
 		AuthContext _context;
-		AuthenticationRepository _authRepository;
-		public UnitOfWork(AuthenticationRepository repository,AuthContext context)
+		public IRepository<Authentication> _authRepository;
+		public UnitOfWork(IRepository<Authentication> repository,AuthContext context)
 		{
 			_context= context;
 			_authRepository= repository;
@@ -48,7 +48,14 @@ namespace Unit_Of_Work.UnitOfWork
 
         public void Dispose()
 		{
-			throw new NotImplementedException();
+			// veri tabanını bellekten düşür
+			_context.Dispose();
+
+			// GC : Garbage Collection
+			// Gel Bu nesneyi bellekten sil
+			GC.SuppressFinalize(this);
+
+
 		}
 	}
 }
